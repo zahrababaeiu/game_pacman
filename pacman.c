@@ -19,6 +19,41 @@ int pacman_x, pacman_y;
 char board[HEIGHT][WIDTH];
 int food = 0;
 int curr = 0;
+int size;
+struct Game{
+    int score;
+    int food;
+    int curr;
+    char board[HEIGHT][WIDTH];
+};
+size=sizeof(struct Game);
+void save()
+{
+	struct Game Save;
+	FILE *save= fopen("F:/PACMAN/save.bin", "wb");
+    if (save == NULL) 
+	{
+        printf("error!");
+        return;
+	}
+	scanf("%d",&score);
+	Save.score=score;
+	scanf("%d",&food);
+	Save.food=food;
+	scanf("%d",&curr);
+	Save.curr=curr;
+	for(int i=0;i<HEIGHT;i++)
+	{
+		for(int j=0;j<WIDTH;j++)
+		{
+			Save.board[i][j]=board[i][j];
+		}
+	}
+	fwrite(&Save,size,1,save);
+    fclose(save);
+    printf("save successfully\n");
+
+}
 void initialize()
 {
 	// Putting Walls as boundary in the Game
