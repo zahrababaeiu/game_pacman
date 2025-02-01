@@ -171,6 +171,13 @@ void move(int move_x, int move_y)
 // Main Function
 int main()
 {
+	printf("Do you want to continue?(y/n)");
+	char choice;
+	scanf("%c",&choice);
+	if(choice=='y'||choice=='Y')
+	{
+		load();
+	}
 	initialize();
 	char ch;
 	food -= 35;
