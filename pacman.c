@@ -4,7 +4,7 @@
 #include <stdlib.h>
 // All the elements to be used
 // Declared here
-#define WIDTH 40
+#define WIDTH 60
 #define HEIGHT 40
 #define PACMAN 'P'
 #define WALL '#'
@@ -19,14 +19,12 @@ int pacman_x, pacman_y;
 char board[HEIGHT][WIDTH];
 int food = 0;
 int curr = 0;
-int size;
 struct Game{
     int score;
     int food;
     int curr;
     char board[HEIGHT][WIDTH];
 };
-size=sizeof(struct Game);
 void save()
 {
 	struct Game Save;
@@ -36,11 +34,8 @@ void save()
         printf("error!");
         return;
 	}
-	scanf("%d",&score);
 	Save.score=score;
-	scanf("%d",&food);
 	Save.food=food;
-	scanf("%d",&curr);
 	Save.curr=curr;
 	for(int i=0;i<HEIGHT;i++)
 	{
@@ -49,10 +44,32 @@ void save()
 			Save.board[i][j]=board[i][j];
 		}
 	}
-	fwrite(&Save,size,1,save);
+	fwrite(&Save,sizeof(struct Game),1,save);
     fclose(save);
     printf("save successfully\n");
 
+}
+void load()
+{
+	struct Game Save;
+	FILE *save= fopen("F:/PACMAN/save.bin", "rb");
+    if (save == NULL) 
+	{
+        printf("error!");
+        return;
+	}
+	fread(&Save,sizeof(struct Game),1,save);
+	score=Save.score;
+	food=Save.food;
+	curr=Save.curr;
+	for(int i=0;i<HEIGHT;i++)
+	{
+		for(int j=0;j<WIDTH;j++)
+		{
+			board[i][j]=Save.board[i][j];
+		}
+	}
+	 fclose(save);
 }
 void initialize()
 {
