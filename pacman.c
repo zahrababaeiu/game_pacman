@@ -12,6 +12,7 @@
 #define FOOD '*'
 #define EMPTY ' '
 #define DEMON 'ً@'
+#define ENEMY 'E'
 // Global Variables are
 // Declared here
 int res = 0;
@@ -20,6 +21,7 @@ int pacman_x, pacman_y;
 char board[HEIGHT][WIDTH];
 int food = 0;
 int curr = 0;
+int enemy_x , enemy_y;
 struct Game{
     int score;
     int food;
@@ -112,7 +114,7 @@ void initialize()
 		}
 	}
 	// Putting Demons in the Game
-	count = 10;
+	count = 25;
 	while (count != 0) {
 		int i = (rand() % (HEIGHT + 1));
 		int j = (rand() % (WIDTH + 1));
@@ -175,6 +177,23 @@ void move(int move_x, int move_y)
 		board[pacman_y][pacman_x] = PACMAN;
 	}
 }
+void enemyMove(int enemy_x, int enemy_y)
+{
+	int x = enemy_x +rand()%5+1;
+	int y = enemy_y +rand()%5+1;
+	if(board[y][x]==PACMAN)
+	{
+		res=1;
+	}
+	else if (board[y][x]!=WALL)
+	{
+	    board[enemy_y][enemy_x] = EMPTY;
+        enemy_x = x;
+        enemy_y = y;
+        board[enemy_y][enemy_x] = 'E';
+	}
+
+}
 void randMove()
 {
 	srand(time(0));
@@ -227,6 +246,11 @@ int main()
 		return 1;
 	}
 	while (1) {
+
+		if(sleep(1))
+		{
+          randMove();
+		}
 		draw();
 		printf("Total Food count: %d\n", totalFood);
 		printf("Total Food eaten: %d\n", curr);
