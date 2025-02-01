@@ -5,12 +5,12 @@
 // All the elements to be used
 // Declared here
 #define WIDTH 40
-#define HEIGHT 20
-#define PACMAN 'C'
+#define HEIGHT 40
+#define PACMAN 'P'
 #define WALL '#'
-#define FOOD '.'
+#define FOOD '*'
 #define EMPTY ' '
-#define DEMON 'X'
+#define DEMON '$'
 // Global Variables are
 // Declared here
 int res = 0;
@@ -155,16 +155,16 @@ int main()
 		// Moving According to the
 		// input character
 		switch (ch) {
-		case 'w':
+		case 72:
 			move(0, -1);
 			break;
-		case 's':
+		case 80:
 			move(0, 1);
 			break;
-		case 'a':
+		case 75:
 			move(-1, 0);
 			break;
-		case 'd':
+		case 77:
 			move(1, 0);
 			break;
 		case 'q':
