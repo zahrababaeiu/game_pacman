@@ -220,8 +220,24 @@ int main()
 			move(1, 0);
 			break;
 		case 'q':
-			printf("Game Over! Your Score: %d\n", score);
-			return 0;
+		    printf("Do you want save?(y/n)\n");
+			char select;
+			scanf("%c",&select);
+			if(select=='y'||select=='Y')
+			{
+				save();
+				return 0;
+			}
+			else if(select=='n'||select=='N')
+			{
+              printf("Game Over! Your Score: %d\n", score);
+			  return 0;
+			}
+			else
+			{
+				printf("error,try again\n");
+			}
+			
 		}
 	}
 	return 0;
