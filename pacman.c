@@ -2,15 +2,16 @@
 #include <conio.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <time.h>
 // All the elements to be used
 // Declared here
 #define WIDTH 60
 #define HEIGHT 40
 #define PACMAN 'P'
-#define WALL '#'
+#define WALL '+'
 #define FOOD '*'
 #define EMPTY ' '
-#define DEMON '$'
+#define DEMON 'ً@'
 // Global Variables are
 // Declared here
 int res = 0;
@@ -24,6 +25,8 @@ struct Game{
     int food;
     int curr;
     char board[HEIGHT][WIDTH];
+	int x;
+	int y;
 };
 void save()
 {
@@ -37,6 +40,8 @@ void save()
 	Save.score=score;
 	Save.food=food;
 	Save.curr=curr;
+	Save.x=pacman_x;
+	Save.y=pacman_y;
 	for(int i=0;i<HEIGHT;i++)
 	{
 		for(int j=0;j<WIDTH;j++)
@@ -62,6 +67,8 @@ void load()
 	score=Save.score;
 	food=Save.food;
 	curr=Save.curr;
+	pacman_x=Save.x;
+	pacman_y=Save.y;
 	for(int i=0;i<HEIGHT;i++)
 	{
 		for(int j=0;j<WIDTH;j++)
@@ -166,6 +173,34 @@ void move(int move_x, int move_y)
 		pacman_x = x;
 		pacman_y = y;
 		board[pacman_y][pacman_x] = PACMAN;
+	}
+}
+void randMove()
+{
+	srand(time(0));
+	int randMove=rand()%9+1;
+    switch (randMove)
+    {
+        case 8:
+		{
+           move(0, -1);
+		   break; 
+		} 
+        case 2: 
+		{
+           move(0, 1); 
+		   break;   
+		}
+        case 4: 
+		{
+           move(-1, 0);
+		   break; 
+		}
+        case 6: 
+		{
+			move(1, 0);
+		    break;  
+		}
 	}
 }
 // Main Function
