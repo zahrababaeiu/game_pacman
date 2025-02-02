@@ -140,10 +140,6 @@ void initialize()
 		}
 	}
 }
-void initializeEnemy()
-{
-
-}
 void draw()
 {
 	// Clear screen
@@ -241,8 +237,7 @@ int main()
 	food -= 35;
 	int totalFood = food;
 	// Instructions to Play
-	printf(" Use buttons for w(up), a(left) , d(right) and "
-		"s(down)\nAlso, Press q for quit\n");
+	printf(" Use buttons for ↑(up), ←(left) , →(right) and ""↓(down)\nAlso, Press q for quit\n");
 	printf("Enter Y to continue: \n");
 	ch = getch();
 	if (ch != 'Y' && ch != 'y') {
@@ -267,49 +262,50 @@ int main()
 			return 1;
 		}
 		// Taking the Input from the user
-		ch = getch();
-		// Moving According to the
-		// input character
-		switch (ch) {
-		case 72:
-			move(0, -1);
-			break;
-		case 80:
-			move(0, 1);
-			break;
-		case 75:
-			move(-1, 0);
-			break;
-		case 77:
-			move(1, 0);
-			break;
-		case 'q':
-		    printf("Do you want save?(y/n)\n");
-			char select;
-			scanf("%c",&select);
-			if(select=='y'||select=='Y')
-			{
-				save();
-				return 0;
-			}
-			else if(select=='n'||select=='N')
-			{
-              printf("Game Over! Your Score: %d\n", score);
-			  return 0;
-			}
-			else
-			{
-				printf("error,try again\n");
-			}
-			
-		}
-		int time=0;
-		Sleep(1000);
-		time++;
-		if(time!=0)
+		if(kbhit())
 		{
+             ch = getch();
+		     // Moving According to the
+		     // input character
+		     switch (ch) {
+		        case 72:
+		        	move(0, -1);
+			        break;
+		        case 80:
+			        move(0, 1);
+			        break;
+		        case 75:
+			       move(-1, 0);
+			       break;
+		        case 77:
+			       move(1, 0);
+			       break;
+		        case 'q':
+		           printf("Do you want save?(y/n)\n");
+			       char select;
+			       select=getch();
+			       if(select=='y'||select=='Y')
+                   {
+				      save();
+				      return 0;
+			       }
+			       else if(select=='n'||select=='N')
+			       {
+                      printf("Game Over! Your Score: %d\n", score);
+			          return 0;
+			       }
+			       else
+			       {
+				      printf("error,try again\n");
+			       }
+				default:
+				   exit(1);
+		        }
+		}else{
+			Sleep(1000);
 			randMove();
 		}
+		
 	}
 	return 0;
 }
