@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <windows.h>
 // All the elements to be used
 // Declared here
 #define WIDTH 60
@@ -11,7 +12,7 @@
 #define WALL '+'
 #define FOOD '*'
 #define EMPTY ' '
-#define DEMON 'ً@'
+#define DEMON '@'
 #define ENEMY 'E'
 // Global Variables are
 // Declared here
@@ -85,8 +86,8 @@ void initialize()
 	// Putting Walls as boundary in the Game
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
-			if (i == 0 || j == WIDTH - 1 || j == 0
-				|| i == HEIGHT - 1) {
+			if (i == 0 || j == WIDTH - 1 || j == 0 || i == HEIGHT - 1)
+		    {
 				board[i][j] = WALL;
 			}
 			else
@@ -98,7 +99,8 @@ void initialize()
 	while (count != 0) {
 		int i = (rand() % (HEIGHT + 1));
 		int j = (rand() % (WIDTH + 1));
-		if (board[i][j] != WALL && board[i][j] != PACMAN) {
+		if (board[i][j] != WALL && board[i][j] != PACMAN) 
+		{
 			board[i][j] = WALL;
 			count--;
 		}
@@ -107,8 +109,8 @@ void initialize()
 	while (val--) {
 		int row = (rand() % (HEIGHT + 1));
 		for (int j = 3; j < WIDTH - 3; j++) {
-			if (board[row][j] != WALL
-				&& board[row][j] != PACMAN) {
+			if (board[row][j] != WALL && board[row][j] != PACMAN)
+		    {
 				board[row][j] = WALL;
 			}
 		}
@@ -130,15 +132,17 @@ void initialize()
 	// Points Placed
 	for (int i = 0; i < HEIGHT; i++) {
 		for (int j = 0; j < WIDTH; j++) {
-			if (i % 2 == 0 && j % 2 == 0
-				&& board[i][j] != WALL
-				&& board[i][j] != DEMON
-				&& board[i][j] != PACMAN) {
+			if (i % 2 == 0 && j % 2 == 0 && board[i][j] != WALL && board[i][j] != DEMON && board[i][j] != PACMAN) 
+			{
 				board[i][j] = FOOD;
 				food++;
 			}
 		}
 	}
+}
+void initializeEnemy()
+{
+
 }
 void draw()
 {
@@ -190,7 +194,7 @@ void enemyMove(int enemy_x, int enemy_y)
 	    board[enemy_y][enemy_x] = EMPTY;
         enemy_x = x;
         enemy_y = y;
-        board[enemy_y][enemy_x] = 'E';
+        board[enemy_y][enemy_x] = ENEMY;
 	}
 
 }
@@ -247,19 +251,13 @@ int main()
 	}
 	while (1) {
 
-		if(sleep(1))
-		{
-          randMove();
-		}
 		draw();
 		printf("Total Food count: %d\n", totalFood);
 		printf("Total Food eaten: %d\n", curr);
 		if (res == 1) {
 			// Clear screen
 			system("cls");
-			printf("Game Over! Dead by Demon\n Your Score: "
-				"%d\n",
-				score);
+			printf("Game Over! Dead by Demon\n Your Score: ""%d\n",score);
 			return 1;
 		}
 		if (res == 2) {
@@ -304,6 +302,13 @@ int main()
 				printf("error,try again\n");
 			}
 			
+		}
+		int time=0;
+		Sleep(1000);
+		time++;
+		if(time!=0)
+		{
+			randMove();
 		}
 	}
 	return 0;
