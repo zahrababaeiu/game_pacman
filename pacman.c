@@ -233,7 +233,7 @@ void randMove()
 // Main Function
 int main()
 {
-	printf("Do you want to continue?(y/n)");
+	printf("Do you want to continue?(y/n)\n");
 	char choice;
 	choice=getch();
 	if(choice=='y'||choice=='Y')
@@ -245,7 +245,7 @@ int main()
 	food -= 35;
 	int totalFood = food;
 	// Instructions to Play
-	printf(" Use buttons for ↑(up), ←(left) , →(right) and ""↓(down)\nAlso, Press q for quit\n");
+	printf(" Use buttons for 8(up), 4(left) , 6(right) and ""2(down)\nAlso, Press q for quit\n");
 	printf("Enter Y to continue: \n");
 	ch = getch();
 	if (ch != 'Y' && ch != 'y') {
@@ -270,23 +270,22 @@ int main()
 			return 1;
 		}
 		enemyMove(enemy_x,enemy_y);
-		// Taking the Input from the user
+		
 		if(kbhit())
 		{
              ch = getch();
-		     // Moving According to the
-		     // input character
+		     
 		     switch (ch) {
-		        case 72:
+		        case '8':
 		        	move(0, -1);
 			        break;
-		        case 80:
+		        case '2':
 			        move(0, 1);
 			        break;
-		        case 75:
+		        case '4':
 			       move(-1, 0);
 			       break;
-		        case 77:
+		        case '6':
 			       move(1, 0);
 			       break;
 		        case 'q':
@@ -314,7 +313,7 @@ int main()
 			Sleep(1000);
 			randMove();
 		}
-		
+	
 	}
 	return 0;
 }
