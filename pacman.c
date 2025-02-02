@@ -139,6 +139,10 @@ void initialize()
 			}
 		}
 	}
+	srand(time(0));
+	enemy_x=rand()%WIDTH+1;
+	enemy_y=rand()%HEIGHT+1;
+	board[enemy_y][enemy_x]=ENEMY;
 }
 void draw()
 {
@@ -177,21 +181,25 @@ void move(int move_x, int move_y)
 		board[pacman_y][pacman_x] = PACMAN;
 	}
 }
-void enemyMove(int enemy_x, int enemy_y)
+void enemyMove()
 {
-	int x = enemy_x +rand()%5+1;
-	int y = enemy_y +rand()%5+1;
-	if(board[y][x]==PACMAN)
+	int x = enemy_x +(rand()%9-4);
+	int y = enemy_y +(rand()%9-4);
+	if(x>0 && x<WIDTH && y>0 && y<HEIGHT)
 	{
-		res=1;
+		if(board[y][x]==PACMAN)
+	   {
+		 res=1;
+	   }
+	    else if (board[y][x]!=WALL)
+	   {
+	     board[enemy_y][enemy_x] = EMPTY;
+         enemy_x = x;
+         enemy_y = y;
+         board[enemy_y][enemy_x] = ENEMY;
+	   }
 	}
-	else if (board[y][x]!=WALL)
-	{
-	    board[enemy_y][enemy_x] = EMPTY;
-        enemy_x = x;
-        enemy_y = y;
-        board[enemy_y][enemy_x] = ENEMY;
-	}
+	
 
 }
 void randMove()
@@ -227,7 +235,7 @@ int main()
 {
 	printf("Do you want to continue?(y/n)");
 	char choice;
-	scanf("%c",&choice);
+	choice=getch();
 	if(choice=='y'||choice=='Y')
 	{
 		load();
@@ -261,6 +269,7 @@ int main()
 			printf("You Win! \n Your Score: %d\n", score);
 			return 1;
 		}
+		enemyMove(enemy_x,enemy_y);
 		// Taking the Input from the user
 		if(kbhit())
 		{
