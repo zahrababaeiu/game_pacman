@@ -14,6 +14,7 @@
 #define EMPTY ' '
 #define DEMON '@'
 #define ENEMY 'E'
+#define DOUBLE '$'
 // Global Variables are
 // Declared here
 int res = 0;
@@ -23,6 +24,8 @@ char board[HEIGHT][WIDTH];
 int food = 0;
 int curr = 0;
 int enemy_x , enemy_y;
+int doubleCount=0;
+int double_x,double_y;
 struct Game{
     int score;
     int food;
@@ -139,10 +142,15 @@ void initialize()
 			}
 		}
 	}
+	//Enemy position
 	srand(time(0));
 	enemy_x=rand()%WIDTH+1;
 	enemy_y=rand()%HEIGHT+1;
 	board[enemy_y][enemy_x]=ENEMY;
+    //Double position
+	double_x =rand()%WIDTH+1;
+    double_y =rand()%HEIGHT+1;
+    board[double_y][double_x]=DOUBLE;
 }
 void draw()
 {
@@ -160,6 +168,11 @@ void draw()
 // Function enables to move the Cursor
 void move(int move_x, int move_y)
 {
+	if(doubleCount>0)
+	{
+       move_x+=2;
+	   move_y+=2;
+	}
 	int x = pacman_x + move_x;
 	int y = pacman_y + move_y;
 	if (board[y][x] != WALL) {
@@ -175,11 +188,20 @@ void move(int move_x, int move_y)
 		else if (board[y][x] == DEMON) {
 			res = 1;
 		}
+		else if(board[y][x]==DOUBLE)
+		{
+			doubleCount=10;
+			board[double_y][double_x] = EMPTY;
+		}
 		board[pacman_y][pacman_x] = EMPTY;
 		pacman_x = x;
 		pacman_y = y;
 		board[pacman_y][pacman_x] = PACMAN;
 	}
+	if (doubleCount > 0)
+	{
+       doubleCount--;
+	} 
 }
 void enemyMove()
 {
@@ -257,6 +279,10 @@ int main()
 		draw();
 		printf("Total Food count: %d\n", totalFood);
 		printf("Total Food eaten: %d\n", curr);
+		if (doubleCount > 0) 
+	   {
+          printf("Double Moves:%d",doubleCount);
+	   }
 		if (res == 1) {
 			// Clear screen
 			system("cls");
@@ -274,7 +300,7 @@ int main()
 		if(kbhit())
 		{
              ch = getch();
-		     
+			 
 		     switch (ch) {
 		        case '8':
 		        	move(0, -1);
