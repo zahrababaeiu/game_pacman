@@ -6,14 +6,15 @@
 #include <windows.h>
 // All the elements to be used
 // Declared here
-#define WIDTH 60
-#define HEIGHT 40
+#define WIDTH 50
+#define HEIGHT 30
 #define PACMAN 'P'
 #define WALL '+'
 #define FOOD '*'
 #define EMPTY ' '
 #define DEMON '@'
 #define ENEMY 'E'
+#define ENEMIES 3
 #define DOUBLE '$'
 // Global Variables are
 // Declared here
@@ -23,42 +24,44 @@ int pacman_x, pacman_y;
 char board[HEIGHT][WIDTH];
 int food = 0;
 int curr = 0;
-int enemy_x , enemy_y;
+int enemy_x[ENEMIES] , enemy_y[ENEMIES];
 int doubleCount=0;
 int double_x,double_y;
+struct structBoard {
+    char typeCell;
+};
 struct Game{
     int score;
     int food;
     int curr;
-    char board[HEIGHT][WIDTH];
+    struct structBoard board[HEIGHT][WIDTH];
 	int x;
 	int y;
 };
 void save()
 {
-	struct Game Save;
-	FILE *save= fopen("F:/PACMAN/save.bin", "wb");
-    if (save == NULL) 
-	{
+    struct Game Save;
+    FILE *save = fopen("F:/PACMAN/save.bin", "wb");
+    if (save == NULL)
+    {
         printf("error!");
         return;
-	}
-	Save.score=score;
-	Save.food=food;
-	Save.curr=curr;
-	Save.x=pacman_x;
-	Save.y=pacman_y;
-	for(int i=0;i<HEIGHT;i++)
-	{
-		for(int j=0;j<WIDTH;j++)
-		{
-			Save.board[i][j]=board[i][j];
-		}
-	}
-	fwrite(&Save,sizeof(struct Game),1,save);
+    }
+    Save.score = score;
+    Save.food = food;
+    Save.curr = curr;
+    Save.x = pacman_x;
+    Save.y = pacman_y;
+    for (int i=0;i<HEIGHT;i++)
+    {
+        for (int j=0; j<WIDTH;j++)
+	    {
+			Save.board[i][j].typeCell = board[i][j];
+        }
+    }
+    fwrite(&Save,sizeof(struct Game),1,save);
     fclose(save);
-    printf("save successfully\n");
-
+    printf("save successfully");
 }
 void load()
 {
@@ -76,12 +79,12 @@ void load()
 	pacman_x=Save.x;
 	pacman_y=Save.y;
 	for(int i=0;i<HEIGHT;i++)
-	{
-		for(int j=0;j<WIDTH;j++)
-		{
-			board[i][j]=Save.board[i][j];
-		}
-	}
+    {
+        for(int j=0; j<WIDTH;j++)
+	    {
+          board[i][j]=Save.board[i][j].typeCell;
+        }
+    }
 	 fclose(save);
 }
 void initialize()
@@ -144,9 +147,12 @@ void initialize()
 	}
 	//Enemy position
 	srand(time(0));
-	enemy_x=rand()%WIDTH+1;
-	enemy_y=rand()%HEIGHT+1;
-	board[enemy_y][enemy_x]=ENEMY;
+	for(int i=0;i<ENEMIES;i++)
+	{
+      enemy_x[i]=rand()%WIDTH+1;
+	  enemy_y[i]=rand()%HEIGHT+1;
+	  board[enemy_y[i]][enemy_x[i]]=ENEMY;
+	}
     //Double position
 	double_x =rand()%WIDTH+1;
     double_y =rand()%HEIGHT+1;
@@ -205,8 +211,10 @@ void move(int move_x, int move_y)
 }
 void enemyMove()
 {
-	int x = enemy_x +(rand()%9-4);
-	int y = enemy_y +(rand()%9-4);
+	for(int i=0;i<ENEMIES;i++)
+  {
+	int x = enemy_x[i] +(rand()%11-5);
+	int y = enemy_y[i] +(rand()%11-5);
 	if(x>0 && x<WIDTH && y>0 && y<HEIGHT)
 	{
 		if(board[y][x]==PACMAN)
@@ -215,14 +223,13 @@ void enemyMove()
 	   }
 	    else if (board[y][x]!=WALL)
 	   {
-	     board[enemy_y][enemy_x] = EMPTY;
-         enemy_x = x;
-         enemy_y = y;
-         board[enemy_y][enemy_x] = ENEMY;
+	     board[enemy_y[i]][enemy_x[i]] = EMPTY;
+         enemy_x[i] = x;
+         enemy_y [i]= y;
+         board[enemy_y[i]][enemy_x[i]] = ENEMY;
 	   }
 	}
-	
-
+  }
 }
 void randMove()
 {
