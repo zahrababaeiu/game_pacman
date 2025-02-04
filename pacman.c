@@ -178,6 +178,7 @@ void move(int move_x, int move_y)
 	{
        move_x+=2;
 	   move_y+=2;
+	   doubleCount--;
 	}
 	int x = pacman_x + move_x;
 	int y = pacman_y + move_y;
@@ -204,10 +205,6 @@ void move(int move_x, int move_y)
 		pacman_y = y;
 		board[pacman_y][pacman_x] = PACMAN;
 	}
-	if (doubleCount > 0)
-	{
-       doubleCount--;
-	} 
 }
 void enemyMove()
 {
